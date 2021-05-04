@@ -1,0 +1,47 @@
+1.
+SELECT count(Orders.OrderID)
+FROM Orders
+inner join Shippers
+on Orders.ShipperID = Shippers.ShipperID
+where Shippers.ShipperName = 'Speedy Express';
+
+result: 54
+
+2.
+Select top 1 Employees.LastName
+from Orders
+left join Employees
+on Orders.EmployeeID = Employees.EmployeeID
+group by Employees.LastName
+order by Count(Orders.EmployeeID) DESC
+
+result: Peacock
+
+3.
+Select Products.ProductName 
+From(
+    Select top 1 ProductID
+    From
+        (
+            SELECT Distinct Orders.OrderID
+            FROM Customers 
+            left join Orders
+            on Customers.CustomerID = Orders.CustomerID
+            where Customers.Country = 'Germany' and Orders.OrderID <> 0
+        ) B
+    left join OrderDetails
+    on B.OrderID = OrderDetails.OrderID
+    order by Quantity DESC
+    ) C
+left join Products on C.ProductID = Products.ProductID
+
+result: Steeleye Stout
+
+
+
+
+
+
+
+
+
